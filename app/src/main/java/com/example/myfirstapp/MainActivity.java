@@ -1,49 +1,54 @@
 package com.example.myfirstapp;
 
+        import android.content.Intent;
+        import android.hardware.SensorEvent;
+        import android.hardware.SensorEventListener;
         import android.support.v7.app.AppCompatActivity;
         import android.os.Bundle;
         import android.hardware.Sensor;
         import android.hardware.SensorManager;
-        import android.hardware.SensorEvent;
-        import android.hardware.SensorEventListener;
+        import android.view.View;
+        import android.view.animation.Animation;
+        import android.view.animation.RotateAnimation;
+        import android.widget.Button;
+        import android.widget.ImageView;
         import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity implements SensorEventListener {
-
-    private TextView xText, yText, zText;
+public class MainActivity extends AppCompatActivity {
     private Sensor mySensor;
-    private SensorManager SM;
+    private Button acc;
+    private Button comp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Create SensorManager
-        SM = (SensorManager) getSystemService(SENSOR_SERVICE);
+        acc = (Button)findViewById(R.id.accelerometer);
+        comp = (Button)findViewById(R.id.compass);
 
-        // Accelerometer Sensor
-        mySensor = SM.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        acc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openAccelerometer();
+            }
+        });
 
-        // Register sensor Listener
-        SM.registerListener(this, mySensor, SensorManager.SENSOR_DELAY_NORMAL);
-
-        // Assign TextView
-        xText = (TextView)findViewById(R.id.xText);
-        yText = (TextView)findViewById(R.id.yText);
-        zText = (TextView)findViewById(R.id.zText);
-
+        comp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openCompass();
+            }
+        });
     }
 
-    @Override
-    public void onSensorChanged(SensorEvent event) {
-        xText.setText("X: " + event.values[0]);
-        yText.setText("Y: " + event.values[1]);
-        zText.setText("Z: " + event.values[2]);
+    public void openAccelerometer() {
+        Intent intent = new Intent(this, Accelerometer.class);
+        startActivity(intent);
     }
 
-    @Override
-    public void onAccuracyChanged(Sensor sensor, int accuracy) {
-        // Not in use
+    public void openCompass() {
+        Intent intent = new Intent(this, Compass.class);
+        startActivity(intent);
     }
 }
