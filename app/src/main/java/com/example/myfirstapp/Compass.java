@@ -1,21 +1,24 @@
 package com.example.myfirstapp;
 
-import android.content.res.AssetFileDescriptor;
+import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.media.MediaPlayer;
+import android.os.Build;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import java.util.Timer;
-import java.util.TimerTask;
+import android.widget.Toast;
 
 public class Compass extends AppCompatActivity implements SensorEventListener {
 
@@ -30,6 +33,10 @@ public class Compass extends AppCompatActivity implements SensorEventListener {
 
     MediaPlayer mp;
 
+    RelativeLayout layout;
+
+    Vibrator vibrator;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,14 +44,21 @@ public class Compass extends AppCompatActivity implements SensorEventListener {
         //
         compassimage = (ImageView) findViewById(R.id.compass_image);
         // TextView that will display the degree
-        DegreeTV = (TextView) findViewById(R.id.DegreeTV);
+        DegreeTV = (TextView) findViewById(R.id.Degree);
         // initialize your android device sensor capabilities
         SensorManage = (SensorManager) getSystemService(SENSOR_SERVICE);
+
+        layout = (RelativeLayout) findViewById(R.id.relativeLayout);
+
+        vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
+
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+        vibrator.cancel();
+        pause();
         // to stop the listener and save battery
         SensorManage.unregisterListener(this);
     }
@@ -75,10 +89,15 @@ public class Compass extends AppCompatActivity implements SensorEventListener {
         compassimage.startAnimation(ra);
         DegreeStart = -degree;
 
-        if(degree == 0) {
+        if (degree >= 345 || degree <= 15) {
             play();
+            layout.setBackgroundColor(Color.RED);
+            vibrator.vibrate(10000);
+                //vibrator.vibrate(0b111110100);
         } else {
             pause();
+            layout.setBackgroundColor(Color.WHITE);
+            vibrator.cancel();
         }
     }
 
