@@ -63,49 +63,36 @@ public class Accelerometer extends AppCompatActivity  implements SensorEventList
     public void onSensorChanged(SensorEvent event) {
         float x = event.values[0];
         float y = event.values[1];
+
+        xText.setText("X: " + event.values[0]);
+        yText.setText("Y: " + event.values[1]);
+        zText.setText("Z: " + event.values[2]);
+
         if (Math.abs(x) > Math.abs(y)) {
             if (x < 0) {
-                //image.setImageResource(R.drawable.right);
                 textView.setText("You tilt the device right");
                 play();
                 //layout.setBackgroundColor(Color.RED);
             }
             if (x > 0) {
-                //image.setImageResource(R.drawable.left);
                 textView.setText("You tilt the device left");
                 pause();
             }
         } else {
             if (y < 0) {
-                //image.setImageResource(R.drawable.up);
                 textView.setText("You tilt the device up");
                 pause();
             }
             if (y > 0) {
-                //image.setImageResource(R.drawable.down);
                 textView.setText("You tilt the device down");
                 pause();
             }
         }
         if (x > (-2) && x < (2) && y > (-2) && y < (2)) {
-            //image.setImageResource(R.drawable.center);
             textView.setText("Not tilt device");
             pause();
 
         }
-
-        //xText.setText("X: " + event.values[0]);
-
-       /* if(event.values[0] >= 0){
-            play();
-            layout.setBackgroundColor(Color.RED);
-        } else {
-            pause();
-            layout.setBackgroundColor(Color.WHITE);
-        }
-
-        yText.setText("Y: " + event.values[1]);
-        zText.setText("Z: " + event.values[2]); */
     }
 
     @Override

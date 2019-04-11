@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -37,12 +38,15 @@ public class Compass extends AppCompatActivity implements SensorEventListener {
 
     Vibrator vibrator;
 
+    private boolean firstPic;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compass);
         //
         compassimage = (ImageView) findViewById(R.id.compass_image);
+        firstPic = true;
         // TextView that will display the degree
         DegreeTV = (TextView) findViewById(R.id.Degree);
         // initialize your android device sensor capabilities
@@ -51,6 +55,20 @@ public class Compass extends AppCompatActivity implements SensorEventListener {
         layout = (RelativeLayout) findViewById(R.id.relativeLayout);
 
         vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
+
+        Button compass_button = (Button) findViewById(R.id.compass_button);
+        compass_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (firstPic) {
+                    compassimage.setImageResource(R.drawable.compass2);
+                    firstPic = false;
+                } else {
+                    compassimage.setImageResource(R.drawable.compass_icon);
+                    firstPic = true;
+                }
+            }
+        });
 
     }
 
