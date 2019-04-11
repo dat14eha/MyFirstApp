@@ -21,10 +21,14 @@ public class Accelerometer extends AppCompatActivity  implements SensorEventList
 
     RelativeLayout layout;
 
+    TextView textView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_accelerometer);
+
+        textView = (TextView) findViewById(R.id.txt);
 
         layout = (RelativeLayout) findViewById(R.id.relativeLayout);
 
@@ -57,9 +61,42 @@ public class Accelerometer extends AppCompatActivity  implements SensorEventList
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        xText.setText("X: " + event.values[0]);
+        float x = event.values[0];
+        float y = event.values[1];
+        if (Math.abs(x) > Math.abs(y)) {
+            if (x < 0) {
+                //image.setImageResource(R.drawable.right);
+                textView.setText("You tilt the device right");
+                play();
+                //layout.setBackgroundColor(Color.RED);
+            }
+            if (x > 0) {
+                //image.setImageResource(R.drawable.left);
+                textView.setText("You tilt the device left");
+                pause();
+            }
+        } else {
+            if (y < 0) {
+                //image.setImageResource(R.drawable.up);
+                textView.setText("You tilt the device up");
+                pause();
+            }
+            if (y > 0) {
+                //image.setImageResource(R.drawable.down);
+                textView.setText("You tilt the device down");
+                pause();
+            }
+        }
+        if (x > (-2) && x < (2) && y > (-2) && y < (2)) {
+            //image.setImageResource(R.drawable.center);
+            textView.setText("Not tilt device");
+            pause();
 
-        if(event.values[0] >= 0){
+        }
+
+        //xText.setText("X: " + event.values[0]);
+
+       /* if(event.values[0] >= 0){
             play();
             layout.setBackgroundColor(Color.RED);
         } else {
@@ -68,7 +105,7 @@ public class Accelerometer extends AppCompatActivity  implements SensorEventList
         }
 
         yText.setText("Y: " + event.values[1]);
-        zText.setText("Z: " + event.values[2]);
+        zText.setText("Z: " + event.values[2]); */
     }
 
     @Override
