@@ -40,6 +40,8 @@ public class Compass extends AppCompatActivity implements SensorEventListener {
 
     private boolean firstPic;
 
+    boolean color = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -109,7 +111,13 @@ public class Compass extends AppCompatActivity implements SensorEventListener {
 
         if (degree >= 345 || degree <= 15) {
             play();
-            layout.setBackgroundColor(Color.RED);
+            if(color) {
+                layout.setBackgroundColor(Color.RED);
+                color = false;
+            } else {
+                layout.setBackgroundColor(Color.BLUE);
+                color = true;
+            }
             vibrator.vibrate(10000);
                 //vibrator.vibrate(0b111110100);
         } else {
